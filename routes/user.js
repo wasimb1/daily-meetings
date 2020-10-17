@@ -37,8 +37,8 @@ router.route("/login")
             if (!verifiedUser)
                 return res.status(404).send("Login credentials incorrect. please check your email and password agiain");
             const token = await verifiedUser.generateAuthToken();
-            res.header('Authorization', 'Bearer ' + token).send({verifiedUser, token});
-            window.localStorage.setItem("token", token);
+            res.header('x-auth',  token).send({verifiedUser, token});
+           // window.localStorage.setItem("token", token);
             
         } catch (error) {
             console.log(error.message)

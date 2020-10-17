@@ -3,12 +3,12 @@ const   jwt     =   require("jsonwebtoken"),
 
 //verify token
 async function authToken(req, res, next) {
-    if (window.localStorage.length > 0) {
-        localStorage.getItem(token);
-      } else {
-        // No items
-      }
-    const token = req.header("Authorization").replace("Bearer ", "");
+    // if (window.localStorage.length > 0) {
+    //     localStorage.getItem(token);
+    //   } else {
+    //     // No items
+    //   }
+    const token = req.header("x-auth");
     if(!token)
         return res.status(401).send("Not authorised to access");
     

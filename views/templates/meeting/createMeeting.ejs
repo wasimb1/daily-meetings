@@ -1,7 +1,21 @@
 <%- include('../../partials/header'); %>
 
+<script>
+  function  myFunction(form)
+    {
+       
+           fetch("/meetings",{method:'post',body:new FormData(form),headers:{'Content-Type':'multipart/form-data'} }).then(res=>{
+               console.log("res: ",res)
+           })
+      
+        return false;
+    }
+  
+</script>
 <div class="container text-center all-form">
-    <form action="/meetings" method="POST">
+    <!-- action="/meetings" -->
+  
+    <form method="POST" onsubmit="return myFunction(this)" > 
         <div class="form-row">
             <div class="col-12 mb-2">
                 <div class="input-group">
