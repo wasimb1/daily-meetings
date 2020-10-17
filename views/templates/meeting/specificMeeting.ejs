@@ -1,0 +1,23 @@
+<%- include('../../partials/header'); %>
+
+<div class="container">
+    
+    <div class="row text-justify">
+        <div class="col-12 text-break px-5">
+            <h3><%= meeting.agenda %></h3>
+            <p><%= meeting.details %></p>
+            <p>Created by: <em><%= meeting.owner %></em></p>
+            <% if (currentUser && meeting.owner.equals(currentUser._id)) { %>
+            <a href="/meetings/<%= meeting._id %>/edit"><i class="fas fa-edit fa-2x"></i></a>
+            <form class="d-inline float-right" action="/meetings/<%= meeting._id %>?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-light p-0">
+                    <i class="fas fa-trash fa-2x text-danger"></i>
+                </button>
+            <% } %>
+            </form>
+        </div>
+    </div>
+    
+</div>
+
+<%- include('../../partials/footer'); %>

@@ -1,0 +1,18 @@
+<%- include('../../partials/header'); %>
+
+<div class="container">
+    <h1 class="text-secondary font-weight-bold">Meetings</h1>
+    
+    <div class="row px-3 text-justify">
+        <% for(let meeting of meetings) { %>
+            <div class="col-md-6 my-2 text-break">
+                <h3 class="font-weight-bold"><%= meeting.agenda %></h3>
+                <p class="my-1"><%= meeting.details.substring(0,100) %></p>
+                <a href="/meetings/<%= meeting._id %>" class="badge badge-info px-2 py-1">More</a>
+            </div>
+        <% } %>
+    </div>
+    
+</div>
+
+<%- include('../../partials/footer'); %>

@@ -1,0 +1,29 @@
+<%- include('../../partials/header'); %>
+
+<div class="container text-center all-form">
+    <form action="/meetings" method="POST">
+        <div class="form-row">
+            <div class="col-12 mb-2">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fa fa-book-open text-info"></i></div>
+                      </div>
+                      <input class="form-control" type="text" name="agenda" placeholder="Meeting Agenda" required/>
+                </div>
+            </div>
+            <div class="col-12 mb-2">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fa fa-book text-info"></i></div>
+                    </div>
+                    <textarea class="form-control" name="details" placeholder="Meeting Details" required></textarea>
+                </div>
+            </div>
+            <div class="col-12">
+                <button class="form-control btn btn-info" type="submit">Create</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<%- include('../../partials/footer'); %>

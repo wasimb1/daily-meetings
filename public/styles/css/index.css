@@ -1,0 +1,24 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+}
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #ffc100;
+    text-align: center;
+}
+.all-form {
+    max-width: 55%;
+    margin: 2rem auto;
+    padding: 5px;
+}
