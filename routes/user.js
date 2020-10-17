@@ -29,7 +29,7 @@ router.route("/signin")
     });
 router.route("/login")
     .get((req, res) => {
-        res.send("Login page");
+        res.render("templates/user/login");
     })
     .post(async (req, res) => {
         try {
@@ -38,7 +38,6 @@ router.route("/login")
                 return res.status(404).send("Login credentials incorrect. please check your email and password agiain");
             const token = await verifiedUser.generateAuthToken();
             res.header('Authorization', 'Bearer ' + token).send({verifiedUser, token});
-            window.localStorage.setItem("token", token);
             
         } catch (error) {
             console.log(error.message)
