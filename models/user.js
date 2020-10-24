@@ -42,7 +42,6 @@ userSchema.virtual("meetings", {
 
 userSchema.pre("save", async function(next) {
     const user = this;
-    console.log("before saving current user ");
     if (user.isModified('password'))
         user.password = await bcrypt.hash(user.password, 10);
     next();
@@ -63,7 +62,7 @@ userSchema.statics.verifyCredentials = async function(email, password) {
 
 userSchema.methods.generateAuthToken = async function() {
     const user = this;
-    const token = jwt.sign({_id: user._id}, process.env.SECRECT_KEY);
+    const token = jwt.sign({_id: user._id}, process.env.SECRECT_KEY, {expiresIn: 2 * 24 * 60 * 60 });
     user.tokens.push({token});
     await user.save();
     return token;

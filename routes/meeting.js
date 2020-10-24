@@ -1,8 +1,6 @@
-const { render } = require("ejs");
-
 const   router              =   require("express").Router(),
         Meeting             =   require("../models/meeting"),
-        authToken           =   require("../middleware/auth"),
+        {authToken}           =   require("../middleware/auth"),
         {meetingValidation} =   require("../middleware/validation");
 
 router.route("")// Get all the meetings
@@ -19,7 +17,8 @@ router.route("")// Get all the meetings
     })// Create a Meeting
     .post(authToken, async (req, res) => {
         const {error} = meetingValidation(req.body);      
-        if (error) return res.status(400).send(error.details[0].message);
+        if (error) 
+            return res.status(400).send(error.details[0].message);
         // Create new meeting along with its owner
         const newMeeting = {
             ...req.body,
@@ -49,7 +48,7 @@ router.get("/me",authToken, async (req, res) => {
 })
 
 //Show form to create a meeting
-router.get("/new", (req, res) => {
+router.get("/new",authToken, (req, res) => {
     // res.send("form to create a new meeting");
     res.render("templates/meeting/createMeeting");
 })
@@ -80,11 +79,12 @@ router.route("/:id")// Show a specific meeting by id
             const updatedMeeting = {};
             resUpdate.forEach(update => updatedMeeting[update] = req.body[update]);
     
-            const updateMeeting = await Meeting.findOneAndUpdate({_id: req.params.id, owner: req.user._id}, {$set: updatedMeeting});
+            const updateMeeting = await Meeting.findOneAndUpdate(req.params.id/*{_id: req.params.id, owner: req.user._id}*/, {$set: updatedMeeting});
             if(!updateMeeting)
                 return res.status(404).send("No meeting found to update");
             res.send(updateMeeting);
         } catch (error) {
+            console.log(error)
             res.status(400).send(error.message);
         }
 
@@ -92,17 +92,27 @@ router.route("/:id")// Show a specific meeting by id
     // Delete a specific meeting based on id
     .delete(authToken, async (req, res) => {
         try {
-            if(!await Meeting.findOneAndDelete({_id: req.params.id, owner: req.user._id}))
+            if(!await Meeting.findOneAndDelete(req.params.id/*{_id: req.params.id, owner: req.user._id}*/))
                 return res.status(400).send("Unable to delete");
             res.send("Deleted successfully");
         } catch (error) {
+            console.log(error.message)
             res.status(400).send(error.message);
         }
     });
 
 //Show form to update a specific meeting
-router.get("/:id/edit", (req, res) => {
-    res.send("Show form to update a specific meeting");
+router.get("/:id/edit", async (req, res) => {
+    try {
+        const meeting = await Meeting.findById(req.params.id);
+        if(!meeting)
+            return res.status(401).send("No meeting");
+        res.render("templates/meeting/updateMeeting", {meeting});
+    } catch (error) {
+        console.log(error.message)
+        res.status(400).send(error.message);      
+    }
+    
 })
 
 module.exports = router;

@@ -1,0 +1,45 @@
+<%- include('../../partials/header'); %>
+
+<div class="container text-center all-form">
+    <h1 class="font-weight-bold"><i class="fas fa-user-plus"></i> Register</h1>
+    <p class="text-muted font-weight-bold">Please add your details to create an account</p>
+    <%- include('../../partials/message'); %>
+    <form action="/user/register" method="POST">
+        <div class="form-row text-center">
+            <div class="col-sm-12 col-md-7 mx-auto mb-2">
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                      <div class="input-group-text"><i class="fa fa-user text-info"></i></div>
+                  </div>
+                  <input type="text" class="form-control" name="name" placeholder="name" value="<%= typeof firstName !== 'undefined' ? name: '' %>" required>
+              </div>
+            </div>
+        
+            <div class="col-sm-12 col-md-7 mx-auto mb-2">
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                      <div class="input-group-text"><i class="fa fa-paper-plane text-info"></i></div>
+                  </div>
+                  <input type="email" class="form-control" name="email" placeholder="Email" value="<%= typeof email !== 'undefined' ? email: '' %>" required>
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-7 mx-auto mb-2">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-key text-info"></i></div>
+                </div>
+                  <input type="password" class="form-control" name="password" placeholder="Password" value="<%= typeof password !== 'undefined' ? password: '' %>" required>
+              </div>
+            </div>
+              
+            <div class="col-sm-12 col-md-7 mx-auto mb-2">
+              <button class="form-control btn btn-info">Register</button>
+              <div class="col-sm-12 col-md-7 mx-auto">
+                <p class="text-secondary">Already have an account? <a class="badge badge-info mx-1 px-2" href="/user/login">Login</a></p>
+              </div>
+    </form>
+</div>
+
+
+<%- include('../../partials/footer'); %>

@@ -1,47 +1,71 @@
-const authToken = require("../middleware/auth");
+const   router                              =   require("express").Router(),
+        User                                =   require("../models/user"),
+        {signinValidation, loginValidation} =   require("../middleware/validation"),
+        {authToken}                         =   require("../middleware/auth");
 
-const   router  =   require("express").Router(),
-        User    =   require("../models/user"),
-        {signinValidation, loginValidation} = require("../middleware/validation");
-
-router.route("/signin")
+router.route("/register")// Register form
     .get((req, res) => {
-        console.log("signin route get");
-        res.send("get users ")
+        res.render("templates/user/register");
     })
+    // Process the registered user's detiails
     .post(async (req, res) => {
-        const {error} = signinValidation(req.body);      
-        if (error) return res.status(400).send(error.details[0].message);
+        const error_msg = [];
+        const {error} = signinValidation(req.body);
+        if (error) {
+            error_msg.push({
+                msg: error.details[0].message
+            })
+            return res.render("templates/user/register", {error_msg});
+        }   
 
         try {
             const foundUser = await User.findOne({email: req.body.email});
-            if (foundUser)
-                return res.status(400).send("An account with this email already exists")
-            
+            if (foundUser) {
+                error_msg.push({
+                    msg: "An account with this email already exists"
+                })
+                return res.render("templates/user/register", {error_msg});
+            }
             const user = await User.create(req.body);
             const token = await user.generateAuthToken();
-            res.header('Authorization', 'Bearer ' + token).send({user, token});
+            res.cookie("x-auth", token, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
+            // res.status(201).send({user, token});
+            res.redirect("/");
         } catch (error) {
             console.log(error.message)
             res.status(400).send(error.message);
         }
 
     });
+// Login form
 router.route("/login")
     .get((req, res) => {
-        res.render("templates/user/login");
+        res.render("templates/user/login")
     })
+    // Login Process
     .post(async (req, res) => {
+        const error_msg = [];
+        //Validation check
+        const {error} = loginValidation(req.body);
+        if (error) {
+            error_msg.push({
+                msg: error.details[0].message
+            })
+            return res.render("templates/user/login", {error_msg});
+        }
+        
         try {
             const verifiedUser = await User.verifyCredentials(req.body.email, req.body.password);
-            if (!verifiedUser)
-                return res.status(404).send("Login credentials incorrect. please check your email and password agiain");
-            const token = await verifiedUser.generateAuthToken();
-            res.header('Authorization', 'Bearer ' + token).send({verifiedUser, token});
             
+            const token = await verifiedUser.generateAuthToken();
+            res.cookie("x-auth", token, { httpOnly: true, maxAge: 2 * 24 * 60 * 60 * 1000 });
+            res.redirect("/");
         } catch (error) {
-            console.log(error.message)
-            res.status(400).send(error.message);
+            console.log(error)
+            error_msg.push({
+                msg: error.message
+            });
+            return res.render("templates/user/login", {error_msg});
         }
     });
 
@@ -57,7 +81,8 @@ router.get("/logout",authToken, async (req, res) => {
             return singleToken.token != req.token;
         });
         await req.user.save();
-        res.send(req.user);
+        res.cookie('x-auth', '', {maxAge: 1});
+        res.redirect("/");
     } catch (error) {
         res.status(500).send(error.message);
     }
@@ -66,7 +91,6 @@ router.get("/logout",authToken, async (req, res) => {
 //logout all
 router.get("/logoutall",authToken, async (req, res) => {
     try {
-        const length = req.user.tokens.length;
         req.user.tokens = [];
         await req.user.save();
         res.send(req.user);

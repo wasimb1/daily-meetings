@@ -1,0 +1,36 @@
+<%- include('../../partials/header'); %>
+
+<div class="container text-center all-form">
+  <h1 class="font-weight-bold"><i class="fas fa-sign-in-alt"></i> Login</h1>
+    <p class="text-secondary font-weight-bold">Please enter your credentials to login</p>
+    <%- include('../../partials/message'); %>
+    <form action="/user/login" method="POST">
+        <div class="form-row text-center">
+            <div class="col-sm-12 col-md-7 mx-auto mb-2">
+              <div class="input-group">
+                  <div class="input-group-prepend">
+                      <div class="input-group-text"><i class="fa fa-paper-plane text-info"></i></div>
+                  </div>
+                  <input type="email" class="form-control" name="email" placeholder="Email" value="<%= typeof email !== 'undefined' ? email: '' %>" required>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-7 mx-auto mb-2">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fa fa-key text-info"></i></div>
+                </div>
+                  <input type="password" class="form-control" name="password" placeholder="Password" value="<%= typeof password !== 'undefined' ? password: '' %>" required>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-7 mx-auto mb-2">
+                <button class="form-control btn btn-info">Login</button>
+            </div>
+            <div class="col-sm-12 col-md-7 mx-auto">
+              <p class="text-secondary">Don't have an account? <a class="badge badge-info mx-1 px-2" href="/user/register">Register</a></p>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<%- include('../../partials/footer'); %>

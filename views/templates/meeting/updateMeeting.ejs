@@ -1,0 +1,30 @@
+<%- include('../../partials/header'); %>
+
+    <div class="container text-center all-form">
+        <form action="/meetings/<%= meeting._id %>?_method=PATCH" method="POST">
+            <div class="form-row">
+                <div class="col-12 mb-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa fa-book-open text-info"></i></div>
+                          </div>
+                          <input class="form-control" type="text" name="agenda" placeholder="Meeting Agenda" value="<%= meeting.agenda %>" required/>
+                    </div>
+                </div>
+                <div class="col-12 mb-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text"><i class="fa fa-book text-info"></i></div>
+                        </div>
+                        <textarea class="form-control" name="details" placeholder="Meeting Details" required><%= meeting.details %></textarea>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="form-control btn btn-info" type="submit">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</form>
+
+<%- include('../../partials/footer'); %>

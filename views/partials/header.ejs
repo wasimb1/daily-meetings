@@ -28,22 +28,25 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">
-                        <% if(currentUser = "undefined") { %>
+                        <% if(!currentUser ) { %>
                             <li class="nav-item">
-                                <a class="nav-link badge badge-pill badge-success my-2 p-2" href="/user/signin">Register</a>
+                                <a class="nav-link badge badge-pill badge-success my-2 p-2" href="/user/register">Register</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link badge badge-pill badge-warning m-2 px-3 py-2" href="/user/login">Login</a>
+                                <a class="nav-link badge badge-pill badge-primary m-2 px-3 py-2" href="/user/login">Login</a>
                             </li>
-                        <% } %>
-                        <% if( currentUser) { %>
+                        <% } else { %>
+                            <li class="nav-item">
+                                <a class="nav-link m-0 px-0">hi, </a>
+                            </li>
+                            <li class="nav-item">
+                               <a class="nav-link " href="/user/me"><%= currentUser.name %></a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link badge badge-pill badge-danger my-2 p-2" href="/user/logout">Logout</a>
                             </li>
+                            
                         <% } %>
-                            <li class="">
-                            <a class="nav-link text-light" href="/about">About us</a>  
-                        </li>
                     </ul>
                 </div>
             </div>
